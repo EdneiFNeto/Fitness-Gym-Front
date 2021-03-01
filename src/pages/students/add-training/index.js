@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Form } from "@unform/web";
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
+
 
 import SideBar from '../../sidebar';
 import Footer from '../../footer';
@@ -26,7 +28,6 @@ export default function AddTrainingStudent (){
     {value: 'B', label: 'B'},
     {value: 'C', label: 'C'},
   ]
-
 
   useEffect(()=> {
 
@@ -99,6 +100,34 @@ export default function AddTrainingStudent (){
     }
   }
 
+  const handleDelete = (training) => {
+    swal({
+      title: `Want to DELETE training the "${training.training.name}"?`,
+      text: "Is action not back!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        handleDeleteTraining(training)
+      } else {
+        swal({
+          title: "Cancel",
+          text: "Is count did not DELETE!",
+          icon: "warning"});
+      }
+    });
+  }
+
+  const handleDeleteTraining = async (training) => {
+    await api.delete(`trainings-students/${training.id}`)
+      .then((response) => {
+        if(response.status === 200){
+          swalsuccess('Training delete is Success!', false);
+        }
+      }).catch((error) => {console.log('error')})
+  }
   
   return(
     <>
@@ -119,13 +148,6 @@ export default function AddTrainingStudent (){
                       <div className="row">
                         <div className="col-md-12">
                           <div className="form-group">
-                            <label className="bmd-label-floating">Name</label>
-                            <Input name="name" type="text" className="form-control" disabled />
-                          </div>
-                        </div>
-
-                        <div className="col-md-4">
-                          <div className="form-group">
                             <label className="bmd-label-floating">Add Training</label>
                             <Select
                               name="training_id"
@@ -134,7 +156,7 @@ export default function AddTrainingStudent (){
                           </div>
                         </div>
 
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                           <div className="form-group">
                             <label className="bmd-label-floating">Repetitions</label>
                             <Select
@@ -144,7 +166,7 @@ export default function AddTrainingStudent (){
                           </div>
                         </div>
 
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                           <div className="form-group">
                             <label className="bmd-label-floating">A/B/C (Série)</label>
                             <Select
@@ -214,7 +236,7 @@ export default function AddTrainingStudent (){
                               <td className="text-center">{trainingStudents.repetitions}</td>
                               <td className="text-center">{trainingStudents.series}</td>
                               <td className="text-right">
-                                <Link to="#" title="Delete" onClick={()=> console.log()}>
+                                <Link to="#" title="Delete" onClick={()=> handleDelete(trainingStudents)}>
                                   <i className="material-icons">delete</i>
                                 </Link>
                               </td>

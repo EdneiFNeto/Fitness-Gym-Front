@@ -2,17 +2,15 @@
 
 # Introdução
 
-Sistema criado para auxiliar no gerenciamento de contas, onde o usuário vai 
-poder cadastrar suas contas e poder guardar histórico, receber notificação 
-de contas vencidas.
+Sistema criado para gerenciar cadastro de aulas, alunos e treinos de uma 
+academia de gisnástica.
 
 ## Screenshots
 
-![Login](screenshots/login.png "Login")
-![Login](screenshots/painel.png "Painel")
-![Login](screenshots/profile.png "Painel")
-![Login](screenshots/create-acount-pay.png "Painel")
-![Login](screenshots/table-account-pay.png "Painel")
+![Login](screenshots/add-students.png "Add Students")
+![Login](screenshots/add-training.png "Add Training")
+![Login](screenshots/list-training.png "List Training")
+![Login](screenshots/events.png "events")
 
 ## Bibliotecas utilizadas
 - [Material-icons](https://material.io/)
@@ -26,4 +24,4 @@ de contas vencidas.
 Templete utilizado como exemplo para desenvolvimento do front da aplicação [creative-tim](https://www.creative-tim.com/).
 
 ## API
-Api Utilizado para realizar as consultas, cadastro e edições [House-Manager-Back](https://github.com/EdneiFNeto/House-Manager-back).
+Api Utilizado para realizar as consultas, cadastro e edições [Fitness-Gym-back](https://github.com/EdneiFNeto/Fitness-Gym-back).

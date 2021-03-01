@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Form } from '@unform/web';
 import  { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 
 import SideBar from '../../sidebar';
 import Footer from '../../footer';
@@ -15,19 +16,21 @@ export default function CreateStudent() {
   const [payts, setPayts] = useState([]);
 
   useEffect(() => {
-    getPayts();
-  }, []);
 
-  async function getPayts() {
-    await api.get(`/payts`)
-      .then((response) => {
-        if (response.status === 200) {
-          setPayts(response.data);
-          formRef.current.setData(response.data);
-        }
-      })
-      .catch((error) => console.log('error', error));
-  }
+    const getpays = async () =>  {
+      await api.get(`/payts`)
+        .then((response) => {
+          if (response.status === 200) {
+            setPayts(response.data);
+            formRef.current.setData(response.data);
+          }
+        })
+        .catch((error) => console.log('error', error));
+    }
+
+    getpays();
+
+  }, [payts]);
 
   async function handleSubmit(data, { reset }) {
     try {
@@ -43,6 +46,37 @@ export default function CreateStudent() {
       console.log('error', error.response);
     }
   }
+
+  const handleDelete = (student) => {
+    swal({
+      title: `Want to DELETE student the "${student.name}"?`,
+      text: "Is action not back!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        handleDeleteStudent(student)
+      } else {
+        swal({
+          title: "Cancel",
+          text: "Is count did not DELETE!",
+          icon: "warning"});
+      }
+    });
+  }
+
+  const handleDeleteStudent = async (student) => {
+    await api.delete(`students/${student.id}`)
+      .then((response) => {
+        if(response.status === 201){
+          swalsuccess('Student delete is Success!', false);
+        }
+      }).catch((error) => {console.log('error')})
+  }
+  
+
   return (
     <>
       <SideBar />
@@ -106,7 +140,6 @@ export default function CreateStudent() {
                         <th className="text-center">Satate paymented</th>
                         <th className="text-center">Register Date</th>
                         <th className="text-center">Add Training</th>
-                        <th className="text-center">Edit</th>
                         <th className="text-right">Delete</th>
                       </thead>
 
@@ -136,17 +169,8 @@ export default function CreateStudent() {
                                 </Link>
                               </td>
 
-                              <td className="text-center">
-                                <Link to={{
-                                    pathname: "/students/edit",
-                                    state: { id: payt.student.id }
-                                  }} title="Edit">
-                                  <i className="material-icons color-red">edit</i>
-                                </Link>
-                              </td>
-
                               <td className="text-right">
-                                <Link to="#" title="Delete">
+                                <Link to="#" title="Delete" onClick={()=> handleDelete(payt.student)}>
                                   <i className="material-icons">delete</i>
                                 </Link>
                               </td>

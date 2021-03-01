@@ -3,7 +3,6 @@ import { Form } from "@unform/web";
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 
-
 import SideBar from '../../sidebar';
 import Footer from '../../footer';
 import Select from '../../../components/Form/select';

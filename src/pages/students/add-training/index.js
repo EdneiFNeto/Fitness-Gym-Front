@@ -10,21 +10,18 @@ import { api } from '../../../service/api';
 import { swalerror, swalsuccess } from '../../../util/dialog/index';
 import { dateActual } from '../../../util/date/getMonthAndYearUtil';
 import avatarMan  from '../../../assets/avatar-man.png';
-import avatarWoman  from '../../../assets/avatar-woman.png';
 
 
 export default function AddTrainingStudent (){
   const formRef = useRef(null);
   const [trainingsStudents, setTrainingStudents] = useState([])
   const [users, setUsers] = useState(undefined);
-  const [training, setTraining] = useState([ 
-    {value: '1', label: 'Biceps - Rosca'}
-  ]);
+  const [training, setTraining] = useState([]);
   const repetitions = [
     {value: '1', label: '6 a 8x'},
     {value: '2', label: '8 a 12x'},
   ]
-  const types = [
+  const series = [
     {value: 'A', label: 'A'},
     {value: 'B', label: 'B'},
     {value: 'C', label: 'C'},
@@ -32,30 +29,68 @@ export default function AddTrainingStudent (){
 
 
   useEffect(()=> {
-    getStudents()
+
+    const getTrainings = async () => {
+      api.get('/trainings')
+        .then((response)=> {
+          if(response.status === 200){
+            const arrayTrainings = [];
+            response.data.forEach((trainig) => {
+              arrayTrainings.push({value: trainig.id, label: `${ trainig.type } - ${ trainig.name }` });
+            })
+            setTraining(arrayTrainings)
+          }
+        })
+    }
+
+    getTrainings();
   }, [])
 
-  async function getStudents(){
+  useEffect(()=> {
+    async function getStudents(){
     
-    await api.get(`/students/51f20866-f44b-4e21-8e90-adbb8ed3fde1`)
-      .then((response)=> {
-        if(response.status === 200){
-          setUsers(response.data)
-          formRef.current.setData(response.data)
-        }
-      })
-      .catch((error) => console.log('error', error))
-  }
-
-
-  async function handleSubmit(data){
-    try {
-      const id = users.id
-      await api.put(`/students/${id}`, { ...data })
+      await api.get(`/students/51f20866-f44b-4e21-8e90-adbb8ed3fde1`)
         .then((response)=> {
-          if(response.status === 204) {
-            swalsuccess('Update User is Success!', false);
-            getStudents();
+          if(response.status === 200){
+            setUsers(response.data)
+            formRef.current.setData(response.data)
+          }
+        })
+        .catch((error) => console.log('error', error))
+    }
+
+    getStudents();
+  }, [])
+
+  useEffect(()=> {
+    const getTrainingsStudents =  async () => {
+      await api.get('/trainings-students')
+        .then((response) => {
+          if(response.status === 200){
+            setTrainingStudents(response.data);
+          }
+        })
+        .catch((error) => console.log('error', error));
+    }
+
+    getTrainingsStudents();
+  }, [trainingsStudents])
+
+  async function handleSubmit(data, { reset }){
+
+    try {
+      const request = {
+        student_id: "51f20866-f44b-4e21-8e90-adbb8ed3fde1", 
+        training_id: data.training_id,
+        repetitions: data.repetitions,
+        series: data.series
+      } 
+
+      await api.post(`/trainings-students`, { ...request })
+        .then((response)=> {
+          if(response.status === 201) {
+            swalsuccess('Training added is Success!', false);
+            reset();
           }
         })
         .catch((error) => swalerror(`${error.response.data.error}`,  true))
@@ -85,14 +120,7 @@ export default function AddTrainingStudent (){
                         <div className="col-md-12">
                           <div className="form-group">
                             <label className="bmd-label-floating">Name</label>
-                            <Input name="name" type="text" className="form-control" />
-                          </div>
-                        </div>
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <label className="bmd-label-floating">E-mail</label>
-                            <Input name="email" type="text" className="form-control" />
-                            
+                            <Input name="name" type="text" className="form-control" disabled />
                           </div>
                         </div>
 
@@ -100,17 +128,17 @@ export default function AddTrainingStudent (){
                           <div className="form-group">
                             <label className="bmd-label-floating">Add Training</label>
                             <Select
-                              name="training"
-                              options={training}
+                              name="training_id"
+                              options={ training }
                             />
                           </div>
                         </div>
 
                         <div className="col-md-4">
                           <div className="form-group">
-                            <label className="bmd-label-floating">Repetitioins</label>
+                            <label className="bmd-label-floating">Repetitions</label>
                             <Select
-                              name="training"
+                              name="repetitions"
                               options={repetitions}
                             />
                           </div>
@@ -120,8 +148,8 @@ export default function AddTrainingStudent (){
                           <div className="form-group">
                             <label className="bmd-label-floating">A/B/C (Série)</label>
                             <Select
-                              name="types"
-                              options={types}
+                              name="series"
+                              options={series}
                             />
                           </div>
                         </div>
@@ -137,17 +165,18 @@ export default function AddTrainingStudent (){
               <div className="col-md-4">
                 <div className="card card-profile">
                   <div className="card-avatar">
-                    <a href="javascript:;">
-                      <img className="img" src={ avatarMan } />
-                    </a>
+                    <Link to="#">
+                      <img className="img" src={ avatarMan } alt="avatar" />
+                    </Link>
                   </div>
                   <div className="card-body">
                     {
                       users !== undefined  && (
                         <div>
                           <h4 className="card-title">{users.name}</h4>
+                          <p className="card-description">{users.id}</p>
                           <p className="card-description">{users.email}</p>
-                          <a href="javascript:;" className="btn btn-primary btn-round">Follow</a>
+                          <Link to="#" className="btn btn-primary btn-round">Follow</Link>
                         </div>
                       )
                     }
@@ -170,18 +199,20 @@ export default function AddTrainingStudent (){
                         <th className="text-left">ID</th>
                         <th className="text-center">Name</th>
                         <th className="text-center">Training</th>
-                        <th className="text-center">Série</th>
+                        <th className="text-center">Reapet</th>
+                        <th className="text-center">Séries</th>
                         <th className="text-right">Delete</th>
                       </thead>
 
                       <tbody>
                         {
-                          trainingsStudents.length > 0 &&  trainingsStudents.map((training, index) => (
+                          trainingsStudents.length > 0 &&  trainingsStudents.map((trainingStudents, index) => (
                             <tr key={index}>
-                              <td className="text-left">{training.id}</td>
-                              <td className="text-center">{training.name}</td>
-                              <td className="text-center">{training.training}</td>
-                              <td className="text-center">{training.serie}</td>
+                              <td className="text-left">  {trainingStudents.id}</td>
+                              <td className="text-center">{trainingStudents.training.name}</td>
+                              <td className="text-center">{trainingStudents.training.type}</td>
+                              <td className="text-center">{trainingStudents.repetitions}</td>
+                              <td className="text-center">{trainingStudents.series}</td>
                               <td className="text-right">
                                 <Link to="#" title="Delete" onClick={()=> console.log()}>
                                   <i className="material-icons">delete</i>

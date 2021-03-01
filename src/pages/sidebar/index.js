@@ -45,7 +45,7 @@ export default function SideBar() {
           </Link>
         </li>
         <li className="nav-item ">
-          <Link className="nav-link" to="/students">
+          <Link className="nav-link" to="/students/create">
             <i className="material-icons">people_alt</i>
             <p>Students</p>
           </Link>

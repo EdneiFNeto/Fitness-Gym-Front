@@ -2,15 +2,15 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Form } from '@unform/web';
 import  { Link } from 'react-router-dom';
 
-import SideBar from '../sidebar';
-import Footer from '../footer';
-import Input from '../../components/Form/Input';
-import { api } from '../../service/api';
-import { swalerror, swalsuccess } from '../../util/dialog/index';
-import { dateActual } from '../../util/date/getMonthAndYearUtil';
+import SideBar from '../../sidebar';
+import Footer from '../../footer';
+import Input from '../../../components/Form/Input';
+import { api } from '../../../service/api';
+import { swalerror, swalsuccess } from '../../../util/dialog/index';
+import { dateActual } from '../../../util/date/getMonthAndYearUtil';
 
 
-export default function Students() {
+export default function CreateStudent() {
   const formRef = useRef(null);
   const [students, setStudents] = useState([]);
 
@@ -118,7 +118,7 @@ export default function Students() {
                               <td className="text-center">{student.email}</td>
                               <td className="text-center">
                                 <Link to={{
-                                    pathname: "/students",
+                                    pathname: "/students/add-training",
                                     state: { id: students.id }
                                   }} title="Training">
                                   <i className="material-icons">fitness_center</i>

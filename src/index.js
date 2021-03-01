@@ -5,7 +5,8 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import App from './App';
 import Register from './pages/register';
 import Painel from './pages/painel';
-import Students from './pages/students';
+import CreateStudent from './pages/students/create';
+import AddTrainingStudent from './pages/students/add-training';
 import Aulas from './pages/aulas';
 import Training from './pages/training';
 
@@ -15,7 +16,8 @@ ReactDOM.render(
       <Route path="/" exact component={App} />
       <Route path="/register" component={Register} />
       <Route path="/painel" component={Painel} />
-      <Route path="/students" component={Students} />
+      <Route path="/students/create" component={CreateStudent} />
+      <Route path="/students/add-training" component={AddTrainingStudent} />
       <Route path="/aulas" component={Aulas} />
       <Route path="/training" component={Training} />
     </Switch>

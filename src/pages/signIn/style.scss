@@ -1,0 +1,296 @@
+$supersmall: 411px;
+$small: 576px;
+$medium: 768px;
+$tablet: 840px;
+$desktop: 960px;
+$navbarbreack: 995px;
+$widescreen: 1200px;
+$superwidescreen: 1400px;
+
+@mixin phone {
+  @media (max-height: #{812px}) {
+    @content;
+  }
+}
+
+@mixin supersmall {
+  @media (max-width: #{$supersmall}) {
+    @content;
+  }
+}
+
+@mixin small {
+  @media (max-width: #{$small}) {
+    @content;
+  }
+}
+
+@mixin medium {
+  @media (max-width: #{$medium}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: #{$desktop}) {
+    @content;
+  }
+}
+
+@mixin navbarbreack {
+  @media (max-width: #{$navbarbreack}) {
+    @content;
+  }
+}
+
+@mixin widescreen {
+  @media (max-width: #{$widescreen}) {
+    @content;
+  }
+}
+
+@mixin superwidescreen {
+  @media (max-width: #{$superwidescreen}) {
+    @content;
+  }
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300;400;600&display=swap");
+$gold: #fee3ae;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(38, 39, 41);
+  
+  color: aliceblue;
+  height: 800px;
+  flex-wrap: wrap;
+  overflow: hidden;
+  .main {
+    margin-top: -10%;
+
+    flex: 0 0 66.6666%;
+    max-width: 66.6666%;
+    @include tablet() {
+      flex: 0 0 80%;
+      max-width: 80%;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 5rem;
+    padding-bottom: 0;
+    @include desktop() {
+      padding: 4rem 2rem;
+      padding-bottom: 0;
+    }
+    @include small() {
+      padding: 2rem 2rem;
+      padding-bottom: 0;
+    }
+    &-wrapper {
+      width: 100%;
+    }
+    &-footer {
+      width: 100%;
+      margin: 1.5rem 0px;
+      margin-top: auto;
+      .title {
+        font-size: 1.5rem !important;
+        text-align: left;
+      }
+      .copyright {
+        margin-top: 0.8rem;
+        text-align: center;
+        font-size: 0.8rem;
+      }
+      hr {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+    .login-methods {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+    form {
+      display: flex;
+      flex-direction: row-reverse;
+      margin-top: 6rem;
+      @include small() {
+        flex-direction: column;
+        margin-top: 2rem;
+      }
+      .form-message {
+        text-align: left;
+        padding-right: 1rem;
+        text-transform: capitalize;
+        &-title {
+          font-size: 0.8rem;
+        }
+        &-body {
+          margin-top: 1rem;
+          font-family: "Signika Negative", sans-serif;
+          font-weight: 400;
+          font-size: 2.6rem;
+          @include small() {
+            font-size: 2rem;
+          }
+        }
+      }
+      .form-body {
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 60%;
+        max-width: 60%;
+        @include medium() {
+          flex: 0 0 50%;
+          max-width: 50%;
+        }
+        @include small() {
+          flex: 0 0 100%;
+          max-width: 100%;
+        }
+        .input {
+          width: 100%;
+          direction: ltr;
+          color: whitesmoke;
+          margin: 1rem 0 !important;
+          @include small() {
+            margin: 0.7rem 0 !important;
+          }
+          &[type="text"],
+          &[type="email"],
+          &[type="password"] {
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1rem 0.8rem;
+            border: 1px rgb(96, 102, 115) solid;
+          }
+          &::placeholder {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: baseline;
+            color: lighten($color: $gold, $amount: 10);
+          }
+        }
+        button[type="submit"] {
+          position: relative;
+          margin-top: 1rem !important;
+          background-color: $gold;
+          color: #333;
+          text-transform: capitalize;
+          font-weight: bold;
+          border: unset;
+          font-family: "Signika Negative", sans-serif;
+          display: inline-block;
+          padding: 0.8rem;
+          font-size: 1.1rem;
+          width: 120px;
+          text-align: left;
+          border-radius: 8px;
+          align-self: flex-start;
+          cursor: pointer;
+          @include small() {
+            width: 100%;
+          }
+          &::after {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 512.001 512.001' style='enable-background:new 0 0 512.001 512.001;' xml:space='preserve'%3E%3Cpath d='M388.819,239.537L156.092,6.816c-9.087-9.089-23.824-9.089-32.912,0.002 c-9.087,9.089-9.087,23.824,0.002,32.912l216.27,216.266L123.179,472.272c-9.087,9.089-9.087,23.824,0.002,32.912 c4.543,4.544,10.499,6.816,16.455,6.816c5.956,0,11.913-2.271,16.457-6.817L388.819,272.45c4.366-4.364,6.817-10.283,6.817-16.455 C395.636,249.822,393.185,243.902,388.819,239.537z'/%3E%3C/svg%3E%0A");
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            width: 15px;
+            height: 15px;
+            transform: translateY(-50%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.checkbox-container {
+  margin: 1rem 0px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  user-select: none;
+  color: lighten($color: $gold, $amount: 12);
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  &:hover input ~ .checkmark {
+    background-color: rgb(80, 80, 80);
+  }
+
+  input:checked ~ .checkmark {
+    background-color: $gold;
+    &:after {
+      display: block;
+    }
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px rgb(96, 102, 115) solid;
+    border-radius: 4px;
+
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    &:after {
+      left: 6px;
+      width: 8px;
+      height: 15px;
+      border: solid rgb(10, 9, 9);
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.text-gold {
+  color: $gold !important;
+}
+.btn-gray {
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  color: rgb(210, 210, 211);
+  background-color: rgba(255, 255, 255, 0.1);
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}

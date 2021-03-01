@@ -119,7 +119,7 @@ export default function CreateStudent() {
                               <td className="text-center">
                                 <Link to={{
                                     pathname: "/students/add-training",
-                                    state: { id: students.id }
+                                    state: { id: student.id }
                                   }} title="Training">
                                   <i className="material-icons">fitness_center</i>
                                 </Link>
@@ -127,8 +127,8 @@ export default function CreateStudent() {
 
                               <td className="text-center">
                                 <Link to={{
-                                    pathname: "/students",
-                                    state: { id: students.id }
+                                    pathname: "/students/edit",
+                                    state: { id: student.id }
                                   }} title="Edit">
                                   <i className="material-icons color-red">edit</i>
                                 </Link>

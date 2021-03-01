@@ -6,7 +6,6 @@ import swal from 'sweetalert';
 
 import SideBar from '../../sidebar';
 import Footer from '../../footer';
-import Input from '../../../components/Form/Input';
 import Select from '../../../components/Form/select';
 import { api } from '../../../service/api';
 import { swalerror, swalsuccess } from '../../../util/dialog/index';
@@ -14,10 +13,10 @@ import { dateActual } from '../../../util/date/getMonthAndYearUtil';
 import avatarMan  from '../../../assets/avatar-man.png';
 
 
-export default function AddTrainingStudent (){
+export default function AddTrainingStudent (props){
   const formRef = useRef(null);
   const [trainingsStudents, setTrainingStudents] = useState([])
-  const [users, setUsers] = useState(undefined);
+  const [student, setStudent] = useState(undefined);
   const [training, setTraining] = useState([]);
   const repetitions = [
     {value: '1', label: '6 a 8x'},
@@ -48,40 +47,47 @@ export default function AddTrainingStudent (){
   }, [])
 
   useEffect(()=> {
-    async function getStudents(){
-    
-      await api.get(`/students/51f20866-f44b-4e21-8e90-adbb8ed3fde1`)
+  
+    if(props.location.state !== undefined){
+      const state = props.location.state
+      const  getStudents = async () => {
+        await api.get(`/students/${state.id}`)
         .then((response)=> {
           if(response.status === 200){
-            setUsers(response.data)
+            setStudent(response.data)
             formRef.current.setData(response.data)
           }
         })
         .catch((error) => console.log('error', error))
+      }
+      
+      getStudents();
     }
 
-    getStudents();
-  }, [])
+  }, [props.location.state])
 
-  useEffect(()=> {
-    const getTrainingsStudents =  async () => {
-      await api.get('/trainings-students')
-        .then((response) => {
-          if(response.status === 200){
-            setTrainingStudents(response.data);
-          }
+  useEffect(() => {
+
+    if(student !== undefined){
+      const getTrainingsStudents =  async () => {
+        await api.get(`/trainings-students/student/${student.id}`)
+          .then((response) => {
+            if(response.status === 200){
+              setTrainingStudents(response.data);
+            }
         })
         .catch((error) => console.log('error', error));
+      }
+      
+      getTrainingsStudents();
     }
-
-    getTrainingsStudents();
-  }, [trainingsStudents])
+  }, [trainingsStudents, student])
 
   async function handleSubmit(data, { reset }){
 
     try {
       const request = {
-        student_id: "51f20866-f44b-4e21-8e90-adbb8ed3fde1", 
+        student_id: student.id, 
         training_id: data.training_id,
         repetitions: data.repetitions,
         series: data.series
@@ -193,11 +199,11 @@ export default function AddTrainingStudent (){
                   </div>
                   <div className="card-body">
                     {
-                      users !== undefined  && (
+                      student !== undefined  && (
                         <div>
-                          <h4 className="card-title">{users.name}</h4>
-                          <p className="card-description">{users.id}</p>
-                          <p className="card-description">{users.email}</p>
+                          <h4 className="card-title">{student.name}</h4>
+                          <p className="card-description">{student.id}</p>
+                          <p className="card-description">{student.email}</p>
                           <Link to="#" className="btn btn-primary btn-round">Follow</Link>
                         </div>
                       )

@@ -7,22 +7,22 @@ import Footer from '../../footer';
 import Input from '../../../components/Form/Input';
 import { api } from '../../../service/api';
 import { swalerror, swalsuccess } from '../../../util/dialog/index';
-import { dateActual } from '../../../util/date/getMonthAndYearUtil';
+import { dateActual, convertDate, addMonth } from '../../../util/date/getMonthAndYearUtil';
 
 
 export default function CreateStudent() {
   const formRef = useRef(null);
-  const [students, setStudents] = useState([]);
+  const [payts, setPayts] = useState([]);
 
   useEffect(() => {
-    getStudents();
+    getPayts();
   }, []);
 
-  async function getStudents() {
-    await api.get(`/students`)
+  async function getPayts() {
+    await api.get(`/payts`)
       .then((response) => {
         if (response.status === 200) {
-          setStudents(response.data);
+          setPayts(response.data);
           formRef.current.setData(response.data);
         }
       })
@@ -35,7 +35,6 @@ export default function CreateStudent() {
         .then((response) => {
           if (response.status === 201) {
             swalsuccess('Students created is Success!', false);
-            getStudents();
             reset();
           }
         })
@@ -104,6 +103,8 @@ export default function CreateStudent() {
                         <th className="text-left">ID</th>
                         <th className="text-center">Name</th>
                         <th className="text-center">E-mail</th>
+                        <th className="text-center">Satate paymented</th>
+                        <th className="text-center">Register Date</th>
                         <th className="text-center">Add Training</th>
                         <th className="text-center">Edit</th>
                         <th className="text-right">Delete</th>
@@ -111,24 +112,34 @@ export default function CreateStudent() {
 
                       <tbody>
                         {
-                          students.length > 0 &&  students.map((student, index) => (
+                          payts.length > 0 &&  payts.map((payt, index) => (
                             <tr key={index}>
-                              <td className="text-left">{student.id}</td>
-                              <td className="text-center">{student.name}</td>
-                              <td className="text-center">{student.email}</td>
+                              <td className="text-left">{payt.student.id}</td>
+                              <td className="text-center">{payt.student.name}</td>
+                              <td className="text-center">{payt.student.email}</td>
+                              <td className="text-center">
+                                <Link to="#">
+                                    <i className="material-icons" 
+                                      title={payt.state ? `Paymented` : `Did not   pay`}
+                                      style={payt.state ? { color: '#558B2F'} : { color: '#b71c1c'}}>{payt.state ? `check_circle` : `info`}</i> 
+                                </Link>
+                              </td>
+                              <td className="text-center">{ `${convertDate(payt.register_date)} - ${addMonth(payt.register_date)}`}</td>
+
                               <td className="text-center">
                                 <Link to={{
                                     pathname: "/students/add-training",
-                                    state: { id: student.id }
+                                    state: { id: payt.student.id }
                                   }} title="Training">
-                                  <i className="material-icons">fitness_center</i>
+                                    
+                                  <i className={`material-icons`}>fitness_center</i>
                                 </Link>
                               </td>
 
                               <td className="text-center">
                                 <Link to={{
                                     pathname: "/students/edit",
-                                    state: { id: student.id }
+                                    state: { id: payt.student.id }
                                   }} title="Edit">
                                   <i className="material-icons color-red">edit</i>
                                 </Link>

@@ -7,7 +7,7 @@ import SideBar from '../sidebar';
 import Footer from '../footer';
 import Card from '../../components/card';
 import { api } from '../../service/api';
-import { getTotal } from '../../util/aritmetic/TotalUtil';
+import { getTotal } from '../../util/arithmetic/TotalUtil';
 import { dateActual } from '../../util/date/getMonthAndYearUtil';
 import { formaterNumber } from '../../util/formatter/FormatterNumerUtil';
 

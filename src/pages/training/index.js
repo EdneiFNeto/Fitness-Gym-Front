@@ -16,19 +16,19 @@ export default function Training() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    async function getTraining() {
-      await api.get(`/trainings`)
-      .then((response) => {
-        if (response.status === 200) {
-          setTraining(response.data);
-          handleClose();
-        }
-      })
-      .catch((error) => swalerror(`${error.response.data.error}`, true));
-    }
-    
     getTraining();
   }, []);
+
+  async function getTraining() {
+    await api.get(`/trainings`)
+    .then((response) => {
+      if (response.status === 200) {
+        setTraining(response.data);
+        handleClose();
+      }
+    })
+    .catch((error) => swalerror(`${error.response.data.error}`, true));
+  }
 
 
   const handleClose = () => setShow(false);
@@ -121,8 +121,8 @@ export default function Training() {
 
         <ModalTraininig
           show={show}
-          handleClose={handleClose}
-          getTraining={trainings} 
+          handleClose={ handleClose }
+          getTraining={ getTraining } 
           />
 
         <Footer />

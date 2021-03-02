@@ -6,6 +6,8 @@ const dateActual = format(
   "'Dia' dd 'de' MMMM', às ' HH:mm'h'"
 );
 
+const currentDate = format(new Date(), "yyyy-MM-dd");
+
 const convertDate = (date) => {
   return format(new Date(date), "dd/MM")
 }
@@ -16,4 +18,4 @@ const addMonth = (date) => {
 }
 
 
-export { dateActual, convertDate, addMonth }
+export { dateActual, convertDate, addMonth, currentDate }

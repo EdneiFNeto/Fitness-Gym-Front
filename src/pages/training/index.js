@@ -10,13 +10,10 @@ import Footer from '../footer';
 import ModalTraininig from './modal-training';
 import { swalerror, swalsuccess } from '../../util/dialog/index';
 
-
-
 export default function Training() {
   const [trainings, setTraining] = useState([]);
 
   const [show, setShow] = useState(false);
-
 
   useEffect(() => {
     async function getTraining() {

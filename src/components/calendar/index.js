@@ -109,38 +109,33 @@ const Appointment = ({
 function Calendar(props) {
 
     return(
-        <>
-            <Paper>
-                <Scheduler
-                data={props.data}
-                height={660}
-                >
-                <ViewState
-                    defaultCurrentDate={props.defaultCurrentDate}
-                />
-                <WeekView
-                    startDayHour={6} //start hour
-                    endDayHour={23} //hour final
-                />
+      <>
+        <Paper>
+          <Scheduler
+          data={props.data}
+          height={660}>
 
-                
-                <Appointments 
-                    appointmentComponent={Appointment}/>
-                
-                <AppointmentTooltip
-                    showCloseButton
-                    headerComponent={Header}
-                    contentComponent={Content}
-                    commandButtonComponent={CommandButton}
-                />
+            <ViewState
+              defaultCurrentDate={props.defaultCurrentDate} />
+            
+            <WeekView
+              startDayHour={9} //start hour
+              endDayHour={22} //hour final
+            />
 
-                <AllDayPanel />
-                
-                </Scheduler>
+            <Appointments 
+              appointmentComponent={Appointment}/>
+            
+            <AppointmentTooltip
+              showCloseButton
+              headerComponent={Header}
+              contentComponent={Content}
+              commandButtonComponent={CommandButton} />
 
-            </Paper>
-
-        </>
+            <AllDayPanel />
+          </Scheduler>
+        </Paper>
+      </>
     )
 }
 

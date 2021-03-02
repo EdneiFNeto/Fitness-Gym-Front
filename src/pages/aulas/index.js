@@ -17,30 +17,30 @@ export default function Aulas(){
   const formateDate = (date) => format(new Date(date), "yyyy-MM-dd HH:mm")
   
   useEffect(() => {
-
-    const getEvents = async () => {
-      await api.get('/events')
-        .then((response) => {
-          if(response.status === 200) {
-            const arrayEvents = [];
-
-            response.data.forEach((element, index) => {
-              arrayEvents.push({ 
-                startDate: formateDate(element.start_date), 
-                endDate: formateDate(element.end_date), 
-                title: element.name,
-                id: index 
-              })
-            });
-            
-            setSchedulerData(arrayEvents);
-          }
-        })
-        .catch((error) => console.log('error', error))
-    }
-
     getEvents();
   }, [schedulerData]);
+
+  const getEvents = async () => {
+    await api.get('/events')
+      .then((response) => {
+        if(response.status === 200) {
+          const arrayEvents = [];
+
+          response.data.forEach((element, index) => {
+            arrayEvents.push({ 
+              startDate: formateDate(element.start_date), 
+              endDate: formateDate(element.end_date), 
+              title: element.name,
+              id: index 
+            })
+          });
+          
+          setSchedulerData(arrayEvents);
+        }
+      })
+      .catch((error) => console.log('error', error))
+  }
+
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -88,7 +88,7 @@ export default function Aulas(){
       <ModalAddEvents
         show={show}
         handleClose={ handleClose }
-          />
+        getEvents= { getEvents } />
     </>
   )
 }

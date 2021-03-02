@@ -19,6 +19,7 @@ export default function ModalAddEvents(props){
             props.handleClose();
             swalsuccess('training created is Success!', false);
             reset();
+            props.getEvents();
           }
         })
         .catch((error) => swalerror(`${error.response.data.error}`, true));
